@@ -852,6 +852,72 @@
   </style>
 </head>
 <body>
+  
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAlQwgFdGT8moQGUxGU8siFIo_CcIA_Opc",
+    authDomain: "skye-back-end.firebaseapp.com",
+    projectId: "skye-back-end",
+    storageBucket: "skye-back-end.firebasestorage.app",
+    messagingSenderId: "547269321128",
+    appId: "1:547269321128:web:ac6a96adf0ddf282e47d9d",
+    measurementId: "G-TD7PBG4CRP"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+
+  <script async src="https://telegram.org/js/telegram-widget.js?22"
+  data-telegram-login="Skyepoabot"  <!-- Replace with your Telegram Bot username -->
+  data-size="large"
+  data-userpic="false"
+  data-request-access="write"
+  data-on-auth="onTelegramAuth">
+</script>
+<script>
+  async function saveTelegramUserToFirebase(user) {
+    const userRef = db.collection("users").doc(user.id.toString());
+
+    const doc = await userRef.get();
+
+    if (!doc.exists) {
+      // New user: create and assign 100 SKYE
+      await userRef.set({
+        telegramId: user.id,
+        username: user.username ? '@' + user.username : '',
+        firstName: user.first_name || '',
+        balance: 100,
+        premium: false,
+        joined: new Date().toISOString(),
+        lastClaim: null
+      });
+
+      alert("🎉 Welcome, new user! You've received 100 SKYE.");
+    } else {
+      alert("👋 Welcome back!");
+    }
+
+    // Save user ID locally for future use (for claiming, etc.)
+    localStorage.setItem("telegramUserId", user.id);
+  }
+</script>
+<script>
+  function onTelegramAuth(user) {
+    // When user logs in, this runs
+    console.log("Telegram User:", user);
+    saveTelegramUserToFirebase(user); // We'll define this function
+  }
+</script>
   <!-- Top Navigation Bar -->
   <div class="topnav">
     <span class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></span>
@@ -884,7 +950,7 @@
   <!-- Main Content Area SPA-style -->
   <main class="main">
     <!-- Dashboard Section -->
-    <section class="section active" id="section-dashboard">
+    <div <class="section active" id="section-dashboard">
       <div style="position:relative;">
         <span class="sky-bg-text">SKYE</span>
         <div class="sky-circle" id="dailyClaimCircle" title="Click to claim +100 SKYE">
