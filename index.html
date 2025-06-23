@@ -876,41 +876,6 @@
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
 </script>
-
-  <script async src="https://telegram.org/js/telegram-widget.js?22"
-  data-telegram-login="Skyepoabot"  <!-- Replace with your Telegram Bot username -->
-  data-size="large"
-  data-userpic="false"
-  data-request-access="write"
-  data-on-auth="onTelegramAuth">
-</script>
-<script>
-  async function saveTelegramUserToFirebase(user) {
-    const userRef = db.collection("users").doc(user.id.toString());
-
-    const doc = await userRef.get();
-
-    if (!doc.exists) {
-      // New user: create and assign 100 SKYE
-      await userRef.set({
-        telegramId: user.id,
-        username: user.username ? '@' + user.username : '',
-        firstName: user.first_name || '',
-        balance: 100,
-        premium: false,
-        joined: new Date().toISOString(),
-        lastClaim: null
-      });
-
-      alert("🎉 Welcome, new user! You've received 100 SKYE.");
-    } else {
-      alert("👋 Welcome back!");
-    }
-
-    // Save user ID locally for future use (for claiming, etc.)
-    localStorage.setItem("telegramUserId", user.id);
-  }
-</script>
 <script>
   function onTelegramAuth(user) {
     // When user logs in, this runs
