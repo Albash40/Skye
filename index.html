@@ -852,8 +852,7 @@
   </style>
 </head>
 <body>
-  
-<script type="module">
+  <script type="module">
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
@@ -875,13 +874,6 @@
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
-</script>
-<script>
-  function onTelegramAuth(user) {
-    // When user logs in, this runs
-    console.log("Telegram User:", user);
-    saveTelegramUserToFirebase(user); // We'll define this function
-  }
 </script>
   <!-- Top Navigation Bar -->
   <div class="topnav">
