@@ -875,6 +875,40 @@
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
 </script>
+  <script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    const tg = window.Telegram.WebApp;
+    const user = tg.initDataUnsafe?.user;
+
+    if (!user) {
+      document.getElementById("username").innerText = "Please open this app inside Telegram.";
+      return;
+    }
+
+    const userId = user.id.toString();
+    const username = user.username || "unknown";
+    const firstName = user.first_name || "";
+
+    document.getElementById("username").innerText = `Welcome, ${firstName}!`;
+
+    const userRef = firebase.firestore().collection("users").doc(userId);
+    const doc = await userRef.get();
+
+    if (!doc.exists) {
+      await userRef.set({
+        telegramId: userId,
+        username: username,
+        firstName: firstName,
+        skyeBalance: 100,
+        isPremium: false,
+        lastClaimTime: null
+      });
+      alert("New Skye user created — 100 SKYE credited.");
+    } else {
+      alert("Welcome back!");
+    }
+  });
+  </script>
   <!-- Top Navigation Bar -->
   <div class="topnav">
     <span class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></span>
