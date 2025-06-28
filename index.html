@@ -1681,20 +1681,16 @@
   </script>
   <script>
   window.onload = function () {
-    if (Telegram.WebApp && Telegram.WebApp.initDataUnsafe && Telegram.WebApp.initDataUnsafe.user) {
+    if (
+      Telegram.WebApp &&
+      Telegram.WebApp.initDataUnsafe &&
+      Telegram.WebApp.initDataUnsafe.user
+    ) {
       const fullData = Telegram.WebApp.initDataUnsafe;
 
-      console.log("Telegram Data:", fullData);
+      // Optional log
+      console.log("Telegram data:", fullData);
 
-      const user = {
-        telegramId: fullData.user.id,
-        username: "@" + (fullData.user.username || "anonymous"),
-        first_name: fullData.user.first_name,
-        last_name: fullData.user.last_name || "",
-        photo_url: fullData.user.photo_url || "",
-      };
-
-      // ✅ Send login data to your backend
       fetch("https://skye-backend-real-node-js.onrender.com/auth/telegram", {
         method: "POST",
         headers: {
@@ -1715,8 +1711,9 @@
         alert("❌ Network error");
         console.error("Fetch error:", err);
       });
+
     } else {
-      alert("❌ Please open this Web App inside Telegram.");
+      alert("❌ Please open this app inside Telegram.");
     }
   };
 </script>
