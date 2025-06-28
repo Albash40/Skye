@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <meta charset="UTF-8">
   <title>SKYE dApp</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1678,5 +1679,46 @@
     renderEarnplusTasks();
     updateDailyClaimCircle();
   </script>
+  <script>
+  window.onload = function () {
+    if (Telegram.WebApp && Telegram.WebApp.initDataUnsafe && Telegram.WebApp.initDataUnsafe.user) {
+      const fullData = Telegram.WebApp.initDataUnsafe;
+
+      console.log("Telegram Data:", fullData);
+
+      const user = {
+        telegramId: fullData.user.id,
+        username: "@" + (fullData.user.username || "anonymous"),
+        first_name: fullData.user.first_name,
+        last_name: fullData.user.last_name || "",
+        photo_url: fullData.user.photo_url || "",
+      };
+
+      // ✅ Send login data to your backend
+      fetch("https://skye-backend-real-node.js.render.com/auth/telegram", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(fullData)
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert("✅ Telegram login successful");
+          console.log("Logged in user:", data.user);
+        } else {
+          alert("❌ Login failed");
+        }
+      })
+      .catch(err => {
+        alert("❌ Network error");
+        console.error("Fetch error:", err);
+      });
+    } else {
+      alert("❌ Please open this Web App inside Telegram.");
+    }
+  };
+</script>
 </body>
 </html>
