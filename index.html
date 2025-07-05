@@ -1680,42 +1680,54 @@
     updateDailyClaimCircle();
   </script>
   <script>
-  window.onload = function () {
-    if (
-      Telegram.WebApp &&
-      Telegram.WebApp.initDataUnsafe &&
-      Telegram.WebApp.initDataUnsafe.user
-    ) {
-      const fullData = Telegram.WebApp.initDataUnsafe;
+window.onload = function () {
+  if (
+    window.Telegram &&
+    Telegram.WebApp &&
+    Telegram.WebApp.initDataUnsafe &&
+    Telegram.WebApp.initDataUnsafe.user
+  ) {
+    const tg = Telegram.WebApp;
+    const user = tg.initDataUnsafe.user;
 
-      // Optional log
-      console.log("Telegram data:", fullData);
+    // Prepare the payload according to Telegram's requirements
+    const payload = {
+      id: user.id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      username: user.username,
+      photo_url: user.photo_url,
+      auth_date: tg.initDataUnsafe.auth_date,
+      hash: tg.initDataUnsafe.hash
+    };
 
-      fetch("https://skye-backend-real-node-js.onrender.com/auth/telegram", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(fullData)
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          alert("✅ Telegram login successful");
-          console.log("Logged in user:", data.user);
-        } else {
-          alert("❌ Login failed");
-        }
-      })
-      .catch(err => {
-        alert("❌ Network error");
-        console.error("Fetch error:", err);
-      });
+    // Optional: log payload for debugging
+    console.log("Sending payload:", payload);
 
-    } else {
-      alert("❌ Please open this app inside Telegram.");
-    }
-  };
+    fetch("https:/https://skye-backend-real-node-js.onrender.com/auth/telegram", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        alert("✅ Telegram login successful");
+        console.log("Logged in user:", data.user);
+      } else {
+        alert("❌ Login failed");
+        console.log("Response data:", data);
+      }
+    })
+    .catch(err => {
+      alert("❌ Network error");
+      console.error("Fetch error:", err);
+    });
+
+  } else {
+    alert("❌ Please open this app inside Telegram.");
+  }
+};
 </script>
 </body>
 </html>
