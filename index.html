@@ -1679,30 +1679,16 @@
     renderEarnplusTasks();
     updateDailyClaimCircle();
   </script>
-  <script>
+<script>
 window.onload = function () {
-  if (
-    window.Telegram &&
-    Telegram.WebApp &&
-    Telegram.WebApp.initDataUnsafe &&
-    Telegram.WebApp.initDataUnsafe.user
-  ) {
+  if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) {
     const tg = Telegram.WebApp;
-    const user = tg.initDataUnsafe.user;
 
-    // Prepare the payload according to Telegram's requirements
     const payload = {
-      id: user.id,
-      first_name: user.first_name,
-      last_name: user.last_name,
-      username: user.username,
-      photo_url: user.photo_url,
-      auth_date: tg.initDataUnsafe.auth_date,
-      hash: tg.initDataUnsafe.hash
+      initData: tg.initData // Secure way: send the signed initData string
     };
 
-    // Optional: log payload for debugging
-    console.log("Sending payload:", payload);
+    console.log("Sending secure payload:", payload);
 
     fetch("https://skye-backend-real-node-js.onrender.com/auth/telegram", {
       method: "POST",
