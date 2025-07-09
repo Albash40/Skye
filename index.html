@@ -1710,5 +1710,16 @@ window.onload = function () {
   }
 };
   </script>
+  <script>
+window.onload = function () {
+  if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) {
+    const initData = Telegram.WebApp.initData;
+    alert("Send this to ChatGPT:\n\n" + initData);
+    console.log("🔎 initData:", initData);
+  } else {
+    alert("Not in Telegram Web App");
+  }
+};
+  </script>
 </body>
 </html>
