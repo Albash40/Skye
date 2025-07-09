@@ -1712,5 +1712,15 @@ window.onload = function () {
   }
 };
 </script>
+  <script>
+window.onload = function () {
+  if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) {
+    const tg = Telegram.WebApp;
+
+    // 🧠 This line shows the Telegram data
+    alert("Init Data: " + tg.initData);
+  }
+};
+</script>
 </body>
 </html>
