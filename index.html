@@ -1679,13 +1679,13 @@
     renderEarnplusTasks();
     updateDailyClaimCircle();
   </script>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script>
 window.onload = function () {
   if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) {
     const tg = Telegram.WebApp;
+
     const payload = {
-      initData: tg.initData
+      initData: tg.initData // this is the full signed string
     };
 
     fetch("https://skye-backend-real-node-js.onrender.com/auth/telegram", {
@@ -1697,18 +1697,17 @@ window.onload = function () {
     .then(data => {
       if (data.success) {
         alert("✅ Telegram login successful");
-        console.log("Logged in user:", data.user);
+        console.log(data.user);
       } else {
-        alert("❌ Login failed");
-        console.log("Login failed details:", data);
+        alert("❌ Login failed: " + data.message);
       }
     })
     .catch(err => {
       alert("❌ Network error");
-      console.error("Fetch error:", err);
+      console.error(err);
     });
   } else {
-    alert("❌ Please open this inside Telegram Web App.");
+    alert("❌ Please open this inside Telegram");
   }
 };
 </script>
